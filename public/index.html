@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href='style.css' />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <h1>Hello node.js</h1>
+
+    <div>
+        <input type='date' id='start' value='2016-06-01' />
+        <input type='date' id='end' value='2016-06-02' />
+        <button onclick='search();'>search</button>
+    </div>
+
+    <div id="tester" style="width:600px;height:400px;"></div>
+    <div id="bar" style="width:600px;height:400px;"></div>
+
+    <div id='data'>
+    </div>
+
+
+    <script>
+        function search() {
+            const start = document.getElementById('start').value
+            const end = document.getElementById('end').value
+
+            const url = `/monitor/temperature/bydevice/${start}/${end}`
+            const el = document.getElementById('data')
+            fetch(url)
+                .then(res => res.json())
+                .then(render)
+
+
+
+            fetch(`/monitor/temperature/bydeviceall/${start}/${end}`)
+                .then(res => res.json())
+                .then(renderAll)
+        }
+
+
+        function render(data) {
+
+            const datas = Object.entries(data)
+                .map(item => {
+                    deviceId = item[0]
+                    list = item[1]
+                    const xs = list.map(row => row.date_day)
+                    const ys = list.map(row => row.avg)
+                    return {
+                        x: xs,
+                        y: ys
+                    }
+                })
+
+            const TESTER = document.getElementById('tester')
+            Plotly.plot(TESTER, datas);
+
+
+            // console.log(data)
+            Object.entries(data)
+                .forEach((item) => {
+                    const deviceId = item[0]
+                    const list = item[1]
+                    el.innerHTML += `<h3>${deviceId}</h3>`
+                    let tableStr = `<table>`
+                    list.forEach(row => {
+                        console.log(row)
+                        tableStr += `<tr><td>${row.date_day}</td><td>${row.avg}</td></tr>`
+                    })
+                    tableStr += `</table>`
+                    el.innerHTML += tableStr
+                })
+            document.getElementById('data').innerHTML = JSON.stringify(data)
+
+        }
+
+        function renderAll(data) {
+            const xs = data.map((_, i) => i + 1)
+
+            var trace1 = {
+                x: xs,
+                y: data.map(row => row.avg),
+                name: 'avg',
+                type: 'bar'
+            };
+
+            var trace2 = {
+                x: xs,
+                y: data.map(row => row.max),
+                name: 'max',
+                type: 'bar'
+            };
+            var trace3 = {
+                x: xs,
+                y: data.map(row => row.min),
+                name: 'min',
+                type: 'bar'
+            };
+
+            var data = [trace1, trace2, trace3];
+
+            var layout = { barmode: 'group' };
+
+            Plotly.newPlot('bar', data, layout);
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+GET http://localhost:3000/
+
+###
+
+GET http://localhost:3000/test
+
+###
+
+GET http://localhost:3000/say/hello?q=567
+
+###
+
+POST http://localhost:3000/report/temperature
+Content-Type: application/json
+
+{
+    "id": 2,
+    "temperature": 26.0
+}
+
+###
+GET http://localhost:3000/monitor/temperature
+
+
+###
+GET http://localhost:3000/monitor/temperature/bydevice/2016-06-01/2016-06-02

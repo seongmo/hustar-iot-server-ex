@@ -1,0 +1,24 @@
+{
+  "name": "study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "create_table": "node src/create_table.js",
+    "seed": "node src/seed_data.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fast-csv": "^3.4.0",
+    "knex": "^0.19.5",
+    "nodemon": "^1.19.4",
+    "pg": "^7.12.1",
+    "request": "^2.88.0",
+    "sqlite3": "^4.1.0"
+  }
+}
