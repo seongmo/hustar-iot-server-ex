@@ -15,7 +15,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "fast-csv": "^3.4.0",
-    "knex": "^0.19.5",
+    "knex": "^2.4.0",
     "nodemon": "^1.19.4",
     "pg": "^7.12.1",
     "request": "^2.88.0",
